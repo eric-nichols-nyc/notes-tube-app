@@ -1,15 +1,29 @@
-'use client';
-import * as Clerk from '@clerk/elements/common';
-import * as SignIn from '@clerk/elements/sign-in';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Icons } from '@/components/ui/icons';
-import { cn } from '@/lib/utils';
-
+"use client";
+import * as Clerk from "@clerk/elements/common";
+import * as SignIn from "@clerk/elements/sign-in";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Icons } from "@/components/ui/icons";
+import { useUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 export default function SignInPage() {
+  // if user is signed in, redirect to dashboard
+  const { isLoaded, isSignedIn, user } = useUser();
+  //if user is not signed in, redirect to dashboard
+  if (isLoaded && isSignedIn) {
+    redirect("/dashboard"); // Navigate to the new post page
+  }
+
   return (
     <div className="grid w-full grow items-center px-4 sm:justify-center">
       <SignIn.Root>
@@ -20,12 +34,19 @@ export default function SignInPage() {
                 <Card className="w-full sm:w-96">
                   <CardHeader>
                     <CardTitle>Sign in to NotesTube</CardTitle>
-                    <CardDescription>Welcome back! Please sign in to continue</CardDescription>
+                    <CardDescription>
+                      Welcome back! Please sign in to continue
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-y-4">
                     <div className="grid grid-cols-2 gap-x-4">
                       <Clerk.Connection name="github" asChild>
-                        <Button size="sm" variant="outline" type="button" disabled={isGlobalLoading}>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          type="button"
+                          disabled={isGlobalLoading}
+                        >
                           <Clerk.Loading scope="provider:github">
                             {(isLoading) =>
                               isLoading ? (
@@ -41,7 +62,12 @@ export default function SignInPage() {
                         </Button>
                       </Clerk.Connection>
                       <Clerk.Connection name="google" asChild>
-                        <Button size="sm" variant="outline" type="button" disabled={isGlobalLoading}>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          type="button"
+                          disabled={isGlobalLoading}
+                        >
                           <Clerk.Loading scope="provider:google">
                             {(isLoading) =>
                               isLoading ? (
@@ -76,14 +102,20 @@ export default function SignInPage() {
                         <Button disabled={isGlobalLoading}>
                           <Clerk.Loading>
                             {(isLoading) => {
-                              return isLoading ? <Icons.spinner className="size-4 animate-spin" /> : 'Continue';
+                              return isLoading ? (
+                                <Icons.spinner className="size-4 animate-spin" />
+                              ) : (
+                                "Continue"
+                              );
                             }}
                           </Clerk.Loading>
                         </Button>
                       </SignIn.Action>
 
                       <Button variant="link" size="sm" asChild>
-                        <Link href="/sign-up">Don&apos;t have an account? Sign up</Link>
+                        <Link href="/sign-up">
+                          Don&apos;t have an account? Sign up
+                        </Link>
                       </Button>
                     </div>
                   </CardFooter>
@@ -94,16 +126,27 @@ export default function SignInPage() {
                 <Card className="w-full sm:w-96">
                   <CardHeader>
                     <CardTitle>Use another method</CardTitle>
-                    <CardDescription>Facing issues? You can use any of these methods to sign in.</CardDescription>
+                    <CardDescription>
+                      Facing issues? You can use any of these methods to sign
+                      in.
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-y-4">
                     <SignIn.SupportedStrategy name="email_code" asChild>
-                      <Button type="button" variant="link" disabled={isGlobalLoading}>
+                      <Button
+                        type="button"
+                        variant="link"
+                        disabled={isGlobalLoading}
+                      >
                         Email code
                       </Button>
                     </SignIn.SupportedStrategy>
                     <SignIn.SupportedStrategy name="password" asChild>
-                      <Button type="button" variant="link" disabled={isGlobalLoading}>
+                      <Button
+                        type="button"
+                        variant="link"
+                        disabled={isGlobalLoading}
+                      >
                         Password
                       </Button>
                     </SignIn.SupportedStrategy>
@@ -114,7 +157,11 @@ export default function SignInPage() {
                         <Button disabled={isGlobalLoading}>
                           <Clerk.Loading>
                             {(isLoading) => {
-                              return isLoading ? <Icons.spinner className="size-4 animate-spin" /> : 'Go back';
+                              return isLoading ? (
+                                <Icons.spinner className="size-4 animate-spin" />
+                              ) : (
+                                "Go back"
+                              );
                             }}
                           </Clerk.Loading>
                         </Button>
@@ -129,7 +176,9 @@ export default function SignInPage() {
                   <Card className="w-full sm:w-96">
                     <CardHeader>
                       <CardTitle>Check your email</CardTitle>
-                      <CardDescription>Enter the verification code sent to your email</CardDescription>
+                      <CardDescription>
+                        Enter the verification code sent to your email
+                      </CardDescription>
                       <p className="text-sm text-muted-foreground">
                         Welcome back <SignIn.SafeIdentifier />
                       </p>
@@ -151,7 +200,11 @@ export default function SignInPage() {
                           <Button disabled={isGlobalLoading}>
                             <Clerk.Loading>
                               {(isLoading) => {
-                                return isLoading ? <Icons.spinner className="size-4 animate-spin" /> : 'Continue';
+                                return isLoading ? (
+                                  <Icons.spinner className="size-4 animate-spin" />
+                                ) : (
+                                  "Continue"
+                                );
                               }}
                             </Clerk.Loading>
                           </Button>
@@ -165,80 +218,34 @@ export default function SignInPage() {
                     </CardFooter>
                   </Card>
                 </SignIn.Strategy>
+                <SignIn.Strategy name="password">
+                  <h1>Enter your password</h1>
 
-                <SignIn.Strategy name="email_code">
-                  <Card className="w-full sm:w-96">
-                    <CardHeader>
-                      <CardTitle>Check your email</CardTitle>
-                      <CardDescription>Enter the verification code sent to your email</CardDescription>
-                      <p className="text-sm text-muted-foreground">
-                        Welcome back <SignIn.SafeIdentifier />
-                      </p>
-                    </CardHeader>
-                    <CardContent className="grid gap-y-4">
-                      <Clerk.Field name="code">
-                        <Clerk.Label className="sr-only">
-                          Email verification code
-                        </Clerk.Label>
-                        <div className="grid gap-y-2 items-center justify-center">
-                          <div className="flex justify-center text-center">
-                            <Clerk.Input
-                              type="otp"
-                              autoSubmit
-                              className="flex justify-center has-[:disabled]:opacity-50"
-                              render={({ value, status }) => {
-                                return (
-                                  <div
-                                    data-status={status}
-                                    className="relative flex h-9 w-9 items-center justify-center border-y border-r border-input text-sm shadow-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md data-[status=selected]:ring-1 data-[status=selected]:ring-ring data-[status=cursor]:ring-1 data-[status=cursor]:ring-ring"
-                                  >
-                                    {value}
-                                  </div>
-                                );
-                              }}
-                            />
-                          </div>
-                          <Clerk.FieldError className="block text-sm text-destructive text-center" />
-                          <SignIn.Action
-                            asChild
-                            resend
-                            className="text-muted-foreground"
-                            fallback={({ resendableAfter }) => (
-                              <Button variant="link" size="sm" disabled>
-                                Didn&apos;t recieve a code? Resend (
-                                <span className="tabular-nums">
-                                  {resendableAfter}
-                                </span>
-                                )
-                              </Button>
-                            )}
-                          >
-                            <Button variant="link" size="sm">
-                              Didn&apos;t recieve a code? Resend
-                            </Button>
-                          </SignIn.Action>
-                        </div>
-                      </Clerk.Field>
-                    </CardContent>
-                    <CardFooter>
-                      <div className="grid w-full gap-y-4">
-                        <SignIn.Action submit asChild>
-                          <Button disabled={isGlobalLoading}>
-                            <Clerk.Loading>
-                              {(isLoading) => {
-                                return isLoading ? <Icons.spinner className="size-4 animate-spin" /> : 'Continue';
-                              }}
-                            </Clerk.Loading>
-                          </Button>
-                        </SignIn.Action>
-                        <SignIn.Action navigate="choose-strategy" asChild>
-                          <Button size="sm" variant="link">
-                            Use another method
-                          </Button>
-                        </SignIn.Action>
-                      </div>
-                    </CardFooter>
-                  </Card>
+                  <Clerk.Field name="password">
+                    <Clerk.Label>Password</Clerk.Label>
+                    <Clerk.Input />
+                    <Clerk.FieldError />
+                  </Clerk.Field>
+
+                  <SignIn.Action submit>Continue</SignIn.Action>
+                  <SignIn.Action navigate="forgot-password">
+                    Forgot password?
+                  </SignIn.Action>
+                </SignIn.Strategy>
+
+                <SignIn.Strategy name="reset_password_email_code">
+                  <h1>Check your email</h1>
+                  <p>
+                    We sent a code to <SignIn.SafeIdentifier />.
+                  </p>
+
+                  <Clerk.Field name="code">
+                    <Clerk.Label>Email code</Clerk.Label>
+                    <Clerk.Input />
+                    <Clerk.FieldError />
+                  </Clerk.Field>
+
+                  <SignIn.Action submit>Continue</SignIn.Action>
                 </SignIn.Strategy>
               </SignIn.Step>
             </>
