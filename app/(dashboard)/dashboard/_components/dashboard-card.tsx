@@ -13,9 +13,8 @@ import Link from "next/link";
 const DashboardCard = () => {
   return (
     <Link href="/dashboard/detail/1234">
-      <Card>
-        <CardHeader>
-          <CardContent className="grid">
+      <Card className="p-1">
+          <CardContent className="grid p-2">
             <AspectRatio ratio={16 / 9} className="bg-muted">
               <Image
                 src="/placeholder.png"
@@ -26,7 +25,6 @@ const DashboardCard = () => {
             </AspectRatio>
           </CardContent>
           <CardDescription>Card title 1</CardDescription>
-        </CardHeader>
       </Card>
     </Link>
   );

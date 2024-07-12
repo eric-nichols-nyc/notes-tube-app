@@ -18,16 +18,6 @@ export const VideoSummaryComponent: React.FC<VideoSummaryProps> = ({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       {/* Left Side: Video and Transcript */}
       <div className="space-y-4">
-        {/* <div className="aspect-w-16 aspect-h-9">
-          <iframe
-            width="100%" height="350" 
-            src={videoData.youtubeUrl}
-            title="YouTube video player"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div> */}
         <div className="relative pb-[56.2%] overflow-hidden">
           <iframe
             className="absolute top-0 left-0 w-full h-full"

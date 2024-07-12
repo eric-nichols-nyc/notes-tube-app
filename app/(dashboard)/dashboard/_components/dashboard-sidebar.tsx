@@ -1,16 +1,17 @@
 import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs";
 import React from "react";
-
+import Link from "next/link";
 export const DashboardBar = () => {
   return (
     <div>
       <header>
       <div className="flex w-[256px] h-screen flex-col justify-between border-e bg-white">
             <div className="px-4 py-6">
+              <Link href="/">
               <span className="grid h-10  place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
                 Logo
               </span>
-
+              </Link>
               <ul className="mt-6 space-y-1">
                 <li>
                   <a
