@@ -1,6 +1,7 @@
 import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs";
 import React from "react";
 import Link from "next/link";
+import { Notebook, PlusCircle } from "lucide-react";
 export const DashboardBar = () => {
   return (
     <div>
@@ -14,37 +15,22 @@ export const DashboardBar = () => {
               </Link>
               <ul className="mt-6 space-y-1">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/dashboard/create"
                     className="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700"
                   >
+                    <PlusCircle size={16} className="inline-block mr-2" />
                     Create
-                  </a>
+                  </Link>
                 </li>
-
                 <li>
-                  <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                  <Link
+                    href="/dashboard"
+                    className="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700"
+                  >
+                    <Notebook size={16} className="inline-block mr-2" />
                     <span className="text-sm font-medium"> Notes </span>
-                  </summary>
-                  <ul className="mt-2 space-y-1 px-4">
-                    <li>
-                      <a
-                        href="#"
-                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        Banned Users
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      >
-                        Calendar
-                      </a>
-                    </li>
-                  </ul>
+                  </Link>
                 </li>
               </ul>
             </div>
