@@ -48,11 +48,11 @@ const YoutubeVideoSummarizer = async() => {
       <div>
         <div>
           <div>
-            <div>
-                <h1>YouTube Video Summarizer</h1>
-                <p>Get YouTube transcript and use AI to summarize YouTube videos in one click for free online with NoteGPT YouTube summary tool.</p>
+            <div className="mt-10 mb-10 flex flex-col items-center justify-items-stretch">
+                <h1 className="text-3xl font-semi-bold text-center mb-4">YouTube Video Summarizer</h1>
+                <p className="text-lg text-center">Get YouTube transcript and use AI to summarize YouTube videos in one click for free online with NoteGPT YouTube summary tool.</p>
             </div>
-            <div>
+            <div className="flex gap-2 mb-10">
               <Input placeholder="Enter the URL of the video" />
               <Button>Generate Summary</Button>
             </div>

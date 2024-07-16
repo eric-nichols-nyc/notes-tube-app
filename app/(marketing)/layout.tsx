@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MarketingNavbar } from "./youtube-video-summarizer/_components/marketing-navbar";
 
 export const metadata: Metadata = {
   title: "User Dashboard",
@@ -11,8 +12,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex">
-      <div>Hello</div>
+    <div className="flex flex-col">
+      <div><MarketingNavbar /></div>
       {children}
     </div>
   );
