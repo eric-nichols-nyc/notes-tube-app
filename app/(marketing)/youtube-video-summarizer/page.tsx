@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import React from "react";
 import { YoutubeTranscript } from 'youtube-transcript';
 import SummaryDetails from "./_components/summary-details";
+import { SumamryForm } from "./_components/summary-form";
 
    const data = {
      summary: "Learn how to create a fullstack registration page using Next.js, Drizzle, Neon, Shadcn, and tRPC to validate and store user data in a database.",
@@ -40,8 +41,8 @@ async function createTranscript(videoId:string) {
 
 
 const YoutubeVideoSummarizer = async() => {
-    const transcript = await createTranscript('https://www.youtube.com/watch?v=jbLa0KBW-jY&t=739s');
-    console.log(transcript);
+    // const transcript = await createTranscript('https://www.youtube.com/watch?v=jbLa0KBW-jY&t=739s');
+    // console.log(transcript);
     
   return (
     <div className="container">
@@ -52,11 +53,7 @@ const YoutubeVideoSummarizer = async() => {
                 <h1 className="text-3xl font-semi-bold text-center mb-4">YouTube Video Summarizer</h1>
                 <p className="text-lg text-center">Get YouTube transcript and use AI to summarize YouTube videos in one click for free online with NoteGPT YouTube summary tool.</p>
             </div>
-            <div className="flex gap-2 mb-10">
-              <Input placeholder="Enter the URL of the video" />
-              <Button>Generate Summary</Button>
-            </div>
-            <SummaryDetails data={data} />
+            <SumamryForm />
           </div>
         </div>
       </div>
