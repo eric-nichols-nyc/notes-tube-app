@@ -94,7 +94,7 @@ export const SumamryForm = () => {
   return (
     <>
       <form action={handleSubmit} className="flex gap-2 mb-10">
-        <Input name="url" placeholder="Enter the URL of the video" />
+        <Input name="url" placeholder="https://www.youtube.com/watch?v=wlY7K_ktAHw" />
         <Button
           type="submit"
           onClick={() => {
