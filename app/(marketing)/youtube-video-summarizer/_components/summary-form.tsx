@@ -6,11 +6,18 @@ import { readStreamableValue } from "ai/rsc";
 import Markdown from "react-markdown";
 import React from "react";
 import { YTPlayer } from "@/components/youtube-player";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@radix-ui/react-separator";
 
 export const SumamryForm = () => {
   const [copy, setCopy] = React.useState<string | any>(undefined);
+  const [transcript, setTranscript] = React.useState<string[]>([]);
   const [videoId, setVideoId] = React.useState<string | any>(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const tags = Array.from({ length: 50 }).map(
+    (_, i, a) => `v1.2.0-beta.${a.length - i}`
+  );
 
   function getYouTubeVideoID(url: string) {
     const regex =
@@ -27,6 +34,7 @@ export const SumamryForm = () => {
   function reduceTextItems(array: any[]) {
     let result = "";
     array.forEach((obj) => {
+      setTranscript((prev) => [...prev, Math.floor(obj.offset)+' '+obj.text]);
       result += obj.text;
     });
     return result;
@@ -90,7 +98,10 @@ export const SumamryForm = () => {
         <Button
           type="submit"
           onClick={() => {
-            setIsLoading(true); // set loading state when button is clicked
+            setIsLoading(true);
+            setVideoId(undefined);
+            setCopy(undefined);
+            setTranscript([]);
           }}
         >
           {isLoading ? (
@@ -123,12 +134,29 @@ export const SumamryForm = () => {
         </Button>
       </form>
       {copy && videoId && (
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
           <div className="grid-cols-1">
-            <YTPlayer videoId="bGShHOOoC-U" title="Never Gonna Give You Up" />
+            <YTPlayer videoId={videoId} title="Video Title" />
+            <ScrollArea className="h-72 w-full rounded-md border">
+              <div className="p-4">
+                <h4 className="mb-4 text-sm font-medium leading-none">
+                  Transcript
+                </h4>
+                {transcript?.map((tag) => (
+                  <>
+                    <div key={tag} className="text-sm">
+                      {tag}
+                    </div>
+                    <Separator className="shrink-0 bg-border h-[1px] w-full my-2" />
+                  </>
+                ))}
+              </div>
+            </ScrollArea>
           </div>
           <div className="grid-cols-1">
-            <Markdown>{copy}</Markdown>
+            <ScrollArea className="h-[400px] w-full rounded-md border p-4">
+              <Markdown>{copy}</Markdown>
+            </ScrollArea>
           </div>
         </div>
       )}

@@ -45,7 +45,7 @@ const YoutubeVideoSummarizer = async() => {
     // console.log(transcript);
     
   return (
-    <div className="container">
+    <div className="container pb-10">
       <div>
         <div>
           <div>
