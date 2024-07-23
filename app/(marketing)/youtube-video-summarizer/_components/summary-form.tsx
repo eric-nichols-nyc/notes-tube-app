@@ -8,16 +8,13 @@ import React from "react";
 import { YTPlayer } from "@/components/youtube-player";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@radix-ui/react-separator";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 
 export const SumamryForm = () => {
   const [copy, setCopy] = React.useState<string | any>(undefined);
   const [transcript, setTranscript] = React.useState<string[]>([]);
   const [videoId, setVideoId] = React.useState<string | any>(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-
-  const tags = Array.from({ length: 50 }).map(
-    (_, i, a) => `v1.2.0-beta.${a.length - i}`
-  );
 
   function getYouTubeVideoID(url: string) {
     const regex =
@@ -34,7 +31,10 @@ export const SumamryForm = () => {
   function reduceTextItems(array: any[]) {
     let result = "";
     array.forEach((obj) => {
-      setTranscript((prev) => [...prev, Math.floor(obj.offset)+' '+obj.text]);
+      setTranscript((prev) => [
+        ...prev,
+        obj.text,
+      ]);
       result += obj.text;
     });
     return result;
@@ -42,7 +42,6 @@ export const SumamryForm = () => {
 
   const handleSubmit = async (data: FormData) => {
     const url = data.get("url") as string;
-    console.log(url);
     if (!url) {
       alert("url is required");
       return;
@@ -64,8 +63,6 @@ export const SumamryForm = () => {
     // get transcript from youtube api
     try {
       const transcript = (await createTranscript(url)) as any;
-      console.log(transcript);
-
       if (Array.isArray(transcript)) {
         const reducedText = reduceTextItems(transcript);
         if (reducedText) {
@@ -94,7 +91,10 @@ export const SumamryForm = () => {
   return (
     <>
       <form action={handleSubmit} className="flex gap-2 mb-10">
-        <Input name="url" placeholder="https://www.youtube.com/watch?v=wlY7K_ktAHw" />
+        <Input
+          name="url"
+          placeholder="ie. https://www.youtube.com/watch?v=wlY7K_ktAHw"
+        />
         <Button
           type="submit"
           onClick={() => {
@@ -133,15 +133,19 @@ export const SumamryForm = () => {
           )}
         </Button>
       </form>
-      {copy && videoId && (
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
-          <div className="grid-cols-1">
-            <YTPlayer videoId={videoId} title="Video Title" />
+      {isLoading && (
+        <div className="text-center">
+          <p className="text-sm text-gray-500">Thinking...</p>
+        </div>
+      )}
+      <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
+        <div className="grid-cols-1">
+          <AspectRatio ratio={16 / 9} className="w-full">
+          {videoId && <YTPlayer videoId={videoId} title="Video Title" />}
+          </AspectRatio>
+          {transcript.length > 0 && (
             <ScrollArea className="h-72 w-full rounded-md border">
               <div className="p-4">
-                <h4 className="mb-4 text-sm font-medium leading-none">
-                  Transcript
-                </h4>
                 {transcript?.map((tag) => (
                   <>
                     <div key={tag} className="text-sm">
@@ -152,14 +156,18 @@ export const SumamryForm = () => {
                 ))}
               </div>
             </ScrollArea>
-          </div>
-          <div className="grid-cols-1">
-            <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-              <Markdown>{copy}</Markdown>
-            </ScrollArea>
-          </div>
+          )}
         </div>
-      )}
+        {copy && (
+           <div className="grid-cols-1">
+            <div className="grid-cols-1">
+              <ScrollArea className="h-[400px] w-full rounded-md border p-4">
+                <Markdown>{copy}</Markdown>
+              </ScrollArea>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 };
