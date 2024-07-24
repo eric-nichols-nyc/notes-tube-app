@@ -45,13 +45,15 @@ const YoutubeVideoSummarizer = async() => {
     // console.log(transcript);
     
   return (
-    <div className="container pb-10">
+    <div className="container pb-10 bg-gradient-to-b from-blue-500 to-transparent">
       <div>
         <div>
           <div>
-            <div className="mt-10 mb-10 flex flex-col items-center justify-items-stretch">
-                <h1 className="text-3xl font-semibold text-center mb-4">YouTube Video Summarizer</h1>
+            <div className="mt-10 mb-10 flex flex-col items-center justify-items-stretch text-white">
+                <h1 className="text-3xl font-semibold text-center mb-4">YouTube AI Video Summarizer</h1>
                 <p className="text-lg text-center">Get YouTube transcript and use AI to summarize YouTube videos in one click for free online with NoteGPT YouTube summary tool.</p>
+                <p className="text-md text-center font-extralight">Please select a video no longer than 45 minutes.</p>
+
             </div>
             <SumamryForm />
           </div>
