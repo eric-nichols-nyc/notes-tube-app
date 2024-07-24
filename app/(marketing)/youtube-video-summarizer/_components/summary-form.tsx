@@ -73,6 +73,10 @@ export const SumamryForm = () => {
             console.log("result is empty");
             return;
           }
+          if(summary.message){
+            alert(summary.message);
+            return;
+          }
           console.log("summary text created", videoId);
           for await (const delta of readStreamableValue(summary))
             setCopy(delta ?? "");
