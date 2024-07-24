@@ -11,11 +11,15 @@ export default function Home() {
           <h1 className="text-4xl mt-10 font-semibold mb-4">
             AI Summarizer & Generator for Enhanced Learning
           </h1>
-          <h4>
-            NoteGPT - YouTube Video Summarizer, PDF Summary, PPT Summary, Image
-            Summaries, and more. Create PPTs, Mindmaps, and Notes with NoteGPT
-            AI. Improve your learning efficiency by 10x.
-          </h4>
+          <div className="text-sm flex flex-col gap-4">
+          <p>
+          Discover the ultimate YouTube companion with our new app, designed to revolutionize how you consume video content. Say goodbye to endless scrolling and guessing games with our innovative summarization feature that distills YouTube videos into concise, informative summaries. Now you can quickly grasp the key points of any video before committing your valuable time.          
+          </p>
+          <p>
+          Whether you’re a busy professional, student, or just someone who loves to stay informed, our app ensures you get the essence of each video in just a few seconds. Simplify your viewing experience and make smarter choices with our game-changing app today!
+          </p>
+          </div>
+     
           <div className="mt-8 flex w-full border">
             <Link href="/youtube-video-summarizer">
               <Button>Try it out!</Button>
