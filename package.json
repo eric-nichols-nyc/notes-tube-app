@@ -26,10 +26,12 @@
     "lucide-react": "^0.407.0",
     "next": "14.2.4",
     "next-safe-action": "^7.4.2",
+    "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
     "react-youtube": "^10.1.0",
+    "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "youtube-transcript": "^1.2.1"

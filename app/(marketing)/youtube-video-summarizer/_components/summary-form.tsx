@@ -9,6 +9,7 @@ import { YTPlayer } from "@/components/youtube-player";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@radix-ui/react-separator";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
+import { toast } from "sonner"
 
 export const SumamryForm = () => {
   const [copy, setCopy] = React.useState<string | any>(undefined);
@@ -58,11 +59,14 @@ export const SumamryForm = () => {
       alert("Video ID could not be found");
       return;
     }
-    setVideoId(videoId);
 
     // get transcript from youtube api
     try {
       const transcript = (await createTranscript(url)) as any;
+      if(transcript?.message){
+        toast(transcript.message)
+        return;
+      }
       if (Array.isArray(transcript)) {
         const reducedText = reduceTextItems(transcript);
         if (reducedText) {
@@ -74,10 +78,11 @@ export const SumamryForm = () => {
             return;
           }
           if(summary.message){
-            alert(summary.message);
+            toast(summary.message)
             return;
           }
-          console.log("summary text created", videoId);
+          setVideoId(videoId);
+
           for await (const delta of readStreamableValue(summary))
             setCopy(delta ?? "");
         } else {

@@ -12,12 +12,17 @@ const rateLimit = new Ratelimit({
         url: process.env.UPSTASH_REDIS_REST_URL!,
         token: process.env.UPSTASH_REDIS_REST_TOKEN!,
     }),
-    limiter: Ratelimit.slidingWindow(2, "60 s"),
+    limiter: Ratelimit.slidingWindow(2, "600 s"),
 });
 
 const ip = headers().get('x-forwarded-for');
 export async function createTranscript(videoId:string) {
+    const {remaining, limit, success} = await rateLimit.limit(ip!);
+    console.log(limit, remaining, success)
 
+        if(!success) {
+            return {message: "You have reached your 2 requests per day limit."}
+        }
     // try catch for error handling
     try {
         const transcript = await YoutubeTranscript.fetchTranscript(videoId);
@@ -33,7 +38,7 @@ export async function streamAndSummarizeContent(content: string): Promise<Stream
     console.log(limit, remaining, success)
 
         if(!success) {
-            return {message: "You have reached your 2 requests per minute limit."}
+            return {message: "You have reached your 2 requests per day limit."}
         }
     try {
         const result = await streamText({
