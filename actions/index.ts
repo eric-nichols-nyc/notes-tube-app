@@ -35,7 +35,6 @@ export async function createTranscript(videoId:string) {
 
 export async function streamAndSummarizeContent(content: string): Promise<StreamableValue | any> {
     const {remaining, limit, success} = await rateLimit.limit(ip!);
-    console.log(limit, remaining, success)
 
         if(!success) {
             return {message: "You have reached your 2 requests per day limit."}
