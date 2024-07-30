@@ -26,10 +26,6 @@ export default function AppTabs({ transcript, copy }: AppTabsProps) {
       </TabsList>
       <TabsContent value="transcript">
         <Card>
-          <CardHeader>
-            <CardTitle>Transcript</CardTitle>
-            <CardDescription>Review your transcript here.</CardDescription>
-          </CardHeader>
           <CardContent className="space-y-2">
           {transcript.length > 0 && (
             <ScrollArea className="h-72 w-full rounded-md border">
