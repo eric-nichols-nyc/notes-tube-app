@@ -26,7 +26,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="h-screen w-full bg-gray-200 rounded-lg overflow-hidden">
+        <div className="hidden md:flex h-screen w-full bg-gray-200 rounded-lg overflow-hidden">
           <div className="h-full w-full flex align-center justify-center">
             <Image
               src="/images/landing.png"

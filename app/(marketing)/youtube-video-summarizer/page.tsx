@@ -52,7 +52,7 @@ const YoutubeVideoSummarizer = async() => {
             <div className="mt-10 mb-10 flex flex-col items-center justify-items-stretch text-white">
                 <h1 className="text-3xl font-semibold text-center mb-4">YouTube AI Video Summarizer</h1>
                 <p className="text-lg text-center">Get YouTube transcript and use AI to summarize YouTube videos in one click for free online with NoteGPT YouTube summary tool.</p>
-                <p className="text-md text-center font-extralight">Please select a video no longer than 45 minutes.</p>
+                <p className="text-md text-center font-extralight">Please select a youtube video no longer than 45 minutes.</p>
                 <p className="text-md text-center font-extralight">(Limit of three summaries per day. APIs are expensive)</p>
 
 
