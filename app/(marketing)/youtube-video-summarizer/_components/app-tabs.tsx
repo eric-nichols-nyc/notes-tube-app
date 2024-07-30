@@ -10,9 +10,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { ClockIcon } from "lucide-react";
 import { Chat } from "./chat";
+import {Transcript} from "./summary-form";
 
 interface AppTabsProps {
-  transcript: string[];
+  transcript: Transcript[];
   copy: string;
 }
 
@@ -32,9 +33,14 @@ export default function AppTabs({ transcript, copy }: AppTabsProps) {
               <div className="p-4">
                 {transcript?.map((tag) => (
                   <>
-                    <div key={tag} className="text-sm">
-                      <ClockIcon size={16} className="inline mr-2" />
-                      {tag}
+                    <div key={tag.text} className="text-sm">
+                      <span className="inline-flex items-center mr-2 text-blue-500">
+                      <ClockIcon size={16} className="inline mr-1" />
+                      {tag.offset}
+                      </span>
+                     <span>
+                      {tag.text}
+                     </span>
                     </div>
                     <Separator className="shrink-0 bg-border h-[1px] w-full my-2" />
                   </>

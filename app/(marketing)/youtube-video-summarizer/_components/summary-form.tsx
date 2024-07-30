@@ -12,14 +12,16 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { toast } from "sonner";
 import AppTabs from "./app-tabs";
 
-type Transcript = {
-  time: string;
-  offset: number;
+export type Transcript = {
+  text: string;
+  duration: number;
+  offset: string;
+  lang?: string;
 };
 
 export const SumamryForm = () => {
   const [copy, setCopy] = React.useState<string | any>(undefined);
-  const [transcript, setTranscript] = React.useState<string[]>([]);
+  const [transcript, setTranscript] = React.useState<Transcript[]>([]);
   const [videoId, setVideoId] = React.useState<string | any>(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
@@ -54,7 +56,15 @@ export const SumamryForm = () => {
     let result = "";
     array.forEach((obj) => {
       let seconds = convertToMinutesAndSeconds(obj.offset) + " " + obj.text;
-      setTranscript((prev) => [...prev, seconds]);
+      let ts = {
+        text: obj.text,
+        duration: obj.offset,
+        offset: seconds,
+        lang: obj.lang,
+      };
+
+    
+      setTranscript((prev) => [...prev, ts]);
 
       result += obj.text + " ";
     });
@@ -83,6 +93,8 @@ export const SumamryForm = () => {
     // get transcript from youtube api
     try {
       const transcript = (await createTranscript(url)) as any;
+      console.log(transcript);
+
       if (transcript?.message) {
         toast(transcript.message);
         return;
