@@ -4,7 +4,7 @@ import YouTube from "react-youtube";
 
 interface YouTubePlayerProps {
   videoId: string;
-  title: string;
+  title?: string;
 }
 
 export const YTPlayer: React.FC<YouTubePlayerProps> = ({ videoId, title }) => {
@@ -22,7 +22,9 @@ export const YTPlayer: React.FC<YouTubePlayerProps> = ({ videoId, title }) => {
             opts={opts} 
           />
         </div>
-      <h2 className="text-xl font-bold">{title}</h2>
+        {
+            title && <h2 className="text-xl font-bold">{title}</h2>
+        }
     </div>
   );
 };

@@ -9,13 +9,34 @@ import { YTPlayer } from "@/components/youtube-player";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@radix-ui/react-separator";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import AppTabs from "./app-tabs";
+
+type Transcript = {
+  time: string;
+  offset: number;
+};
 
 export const SumamryForm = () => {
   const [copy, setCopy] = React.useState<string | any>(undefined);
   const [transcript, setTranscript] = React.useState<string[]>([]);
   const [videoId, setVideoId] = React.useState<string | any>(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  function convertToMinutesAndSeconds(decimalSeconds: number) {
+    // Extract the integer part of the number
+    const totalSeconds = Math.floor(decimalSeconds);
+
+    // Calculate minutes and remaining seconds
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    // Format minutes and seconds to always be two digits
+    const formattedMinutes = String(minutes).padStart(2, "0");
+    const formattedSeconds = String(seconds).padStart(2, "0");
+
+    return `${formattedMinutes}:${formattedSeconds}`;
+  }
 
   function getYouTubeVideoID(url: string) {
     const regex =
@@ -32,11 +53,10 @@ export const SumamryForm = () => {
   function reduceTextItems(array: any[]) {
     let result = "";
     array.forEach((obj) => {
-      setTranscript((prev) => [
-        ...prev,
-        obj.text,
-      ]);
-      result += obj.text;
+      let seconds = convertToMinutesAndSeconds(obj.offset) + " " + obj.text;
+      setTranscript((prev) => [...prev, seconds]);
+
+      result += obj.text + " ";
     });
     return result;
   }
@@ -63,22 +83,23 @@ export const SumamryForm = () => {
     // get transcript from youtube api
     try {
       const transcript = (await createTranscript(url)) as any;
-      if(transcript?.message){
-        toast(transcript.message)
+      if (transcript?.message) {
+        toast(transcript.message);
         return;
       }
       if (Array.isArray(transcript)) {
         const reducedText = reduceTextItems(transcript);
+        console.log(reducedText);
+
         if (reducedText) {
-          console.log("reduced text created");
           const summary = await streamAndSummarizeContent(reducedText);
 
           if (!summary) {
-            console.log("result is empty");
+            toast("No summary found");
             return;
           }
-          if(summary.message){
-            toast(summary.message)
+          if (summary.message) {
+            toast(summary.message);
             return;
           }
           setVideoId(videoId);
@@ -86,12 +107,13 @@ export const SumamryForm = () => {
           for await (const delta of readStreamableValue(summary))
             setCopy(delta ?? "");
         } else {
-          console.log("No transcript found");
+          toast("No transcript found");
           return;
         }
       }
     } catch (error) {
       console.log(error);
+      toast("Error generating summary");
     } finally {
       setIsLoading(false);
     }
@@ -150,32 +172,14 @@ export const SumamryForm = () => {
       <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
         <div className="grid-cols-1">
           <AspectRatio ratio={16 / 9} className="w-full">
-          {videoId && <YTPlayer videoId={videoId} title="Video Title" />}
+            {videoId && <YTPlayer videoId={videoId} />}
           </AspectRatio>
-          {transcript.length > 0 && (
-            <ScrollArea className="h-72 w-full rounded-md border">
-              <div className="p-4">
-                {transcript?.map((tag) => (
-                  <>
-                    <div key={tag} className="text-sm">
-                      {tag}
-                    </div>
-                    <Separator className="shrink-0 bg-border h-[1px] w-full my-2" />
-                  </>
-                ))}
-              </div>
-            </ScrollArea>
+        </div>
+        <div className="grid-cols-1">
+          {copy && (
+              <AppTabs transcript={transcript} copy={copy} />
           )}
         </div>
-        {copy && (
-           <div className="grid-cols-1">
-            <div className="grid-cols-1">
-              <ScrollArea className="h-[400px] w-full rounded-md border p-4">
-                <Markdown>{copy}</Markdown>
-              </ScrollArea>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

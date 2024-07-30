@@ -17,7 +17,7 @@ export const MarketingNavbar = () => {
           <h1>NotesTube</h1>
         </Link>
       </div>
-      <SignedOut>
+      {/* <SignedOut>
         <Link href="/sign-in">
           <Button>Login</Button>
         </Link>
@@ -26,7 +26,7 @@ export const MarketingNavbar = () => {
         <Link href="/dashboard">
           <Button>Dashboard</Button>
         </Link>
-      </SignedIn>
+      </SignedIn> */}
     </div>
   );
 };
