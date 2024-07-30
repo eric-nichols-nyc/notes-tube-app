@@ -47,10 +47,6 @@ export default function AppTabs({ transcript, copy }: AppTabsProps) {
       </TabsContent>
       <TabsContent value="summary">
         <Card>
-          <CardHeader>
-            <CardTitle>AI Summary</CardTitle>
-            <CardDescription>Review the AI-generated summary here.</CardDescription>
-          </CardHeader>
           <CardContent className="space-y-2">
           <ScrollArea className="h-72 w-full rounded-md border p-4">
                 <Markdown>{copy}</Markdown>
