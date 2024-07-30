@@ -1,4 +1,6 @@
-"use client";
+"use client"; // This is a React Server Component (RSC) directive
+
+// Importing necessary modules and components
 import { createTranscript, streamAndSummarizeContent } from "@/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +14,7 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { toast } from "sonner";
 import AppTabs from "./app-tabs";
 
+// Defining a type for the Transcript object
 export type Transcript = {
   text: string;
   duration: number;
@@ -19,12 +22,15 @@ export type Transcript = {
   lang?: string;
 };
 
+// Defining the SummaryForm component
 export const SumamryForm = () => {
+  // Declaring state variables using React hooks
   const [copy, setCopy] = React.useState<string | any>(undefined);
   const [transcript, setTranscript] = React.useState<Transcript[]>([]);
   const [videoId, setVideoId] = React.useState<string | any>(undefined);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
+  // Function to convert decimal seconds to minutes and seconds format
   function convertToMinutesAndSeconds(decimalSeconds: number) {
     // Extract the integer part of the number
     const totalSeconds = Math.floor(decimalSeconds);
@@ -40,6 +46,7 @@ export const SumamryForm = () => {
     return `${formattedMinutes}:${formattedSeconds}`;
   }
 
+  // Function to extract the video ID from a YouTube URL
   function getYouTubeVideoID(url: string) {
     const regex =
       /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -47,11 +54,13 @@ export const SumamryForm = () => {
     return match ? match[1] : null;
   }
 
+  // Function to validate a YouTube URL
   function validateYouTubeUrl(url: string) {
     const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
     return regex.test(url);
   }
 
+  // Function to reduce an array of text items into a single string
   function reduceTextItems(array: any[]) {
     let result = "";
     array.forEach((obj) => {
@@ -63,7 +72,7 @@ export const SumamryForm = () => {
         lang: obj.lang,
       };
 
-    
+      // Adding the current transcript item to the transcript state
       setTranscript((prev) => [...prev, ts]);
 
       result += obj.text + " ";
@@ -71,18 +80,19 @@ export const SumamryForm = () => {
     return result;
   }
 
+  // Function to handle form submission
   const handleSubmit = async (data: FormData) => {
     const url = data.get("url") as string;
     if (!url) {
-      alert("url is required");
+      alert("url is required"); // Showing an alert if the URL is missing
       return;
     }
-    // if url is not from youtube, return error message
+    // Checking if the URL is a valid YouTube URL
     if (!validateYouTubeUrl(url)) {
       alert("Please enter a valid YouTube URL");
       return;
     }
-    // get id from youtube url else show error message
+    // Extracting the video ID from the URL
     const videoId = getYouTubeVideoID(url);
 
     if (!videoId) {
@@ -90,13 +100,13 @@ export const SumamryForm = () => {
       return;
     }
 
-    // get transcript from youtube api
+    // Fetching the transcript from the YouTube API
     try {
       const transcript = (await createTranscript(url)) as any;
       console.log(transcript);
 
       if (transcript?.message) {
-        toast(transcript.message);
+        toast(transcript.message); // Showing a toast message if there's an error
         return;
       }
       if (Array.isArray(transcript)) {
@@ -114,8 +124,9 @@ export const SumamryForm = () => {
             toast(summary.message);
             return;
           }
-          setVideoId(videoId);
+          setVideoId(videoId); // Updating the video ID state
 
+          // Streaming the summary and updating the copy state
           for await (const delta of readStreamableValue(summary))
             setCopy(delta ?? "");
         } else {
@@ -127,10 +138,11 @@ export const SumamryForm = () => {
       console.log(error);
       toast("Error generating summary");
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Setting the loading state to false
     }
   };
 
+  // Rendering the component
   return (
     <>
       <form action={handleSubmit} className="flex gap-2 mb-10">
@@ -141,13 +153,13 @@ export const SumamryForm = () => {
         <Button
           type="submit"
           onClick={() => {
-            setIsLoading(true);
+            setIsLoading(true); // Setting the loading state to true
             setVideoId(undefined);
             setCopy(undefined);
             setTranscript([]);
           }}
         >
-          {isLoading ? (
+          {isLoading ? ( // Rendering a loading spinner if the component is loading
             <>
               <svg
                 className="animate-spin h-5 w-5 mr-3 text-white"
@@ -172,11 +184,11 @@ export const SumamryForm = () => {
               Please wait
             </>
           ) : (
-            "Generate Summary"
+            "Generate Summary" // Rendering the button text if not loading
           )}
         </Button>
       </form>
-      {isLoading && (
+      {isLoading && ( // Rendering a loading message if the component is loading
         <div className="text-center">
           <p className="text-sm text-gray-500">Thinking...</p>
         </div>
@@ -188,9 +200,7 @@ export const SumamryForm = () => {
           </AspectRatio>
         </div>
         <div className="grid-cols-1">
-          {copy && (
-              <AppTabs transcript={transcript} copy={copy} />
-          )}
+          {copy && <AppTabs transcript={transcript} copy={copy} />} {/* Rendering the summary */}
         </div>
       </div>
     </>

@@ -29,7 +29,7 @@ export const Chat = () => {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`my-2 w-full max-w-md ${
+            className={`my-2 w-full ${
               message.sender === 'user'
                 ? 'self-end bg-blue-500 text-white rounded-l-lg rounded-br-lg'
                 : 'bg-gray-300 rounded-r-lg rounded-bl-lg'
