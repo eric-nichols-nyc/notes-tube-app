@@ -8,11 +8,11 @@ type Message = {
   sender: 'user' | 'other';
 }
 export const Chat = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState<string>('');
+  const {messages, input, handleInputChange, handleSubmit} = useChat({
+    api: '/api/chat',
+  });
   const containerRef = useRef<HTMLDivElement>(null);
-
-  //const {messages, input, handleInputChange, handleSubmit} = useChat();
+  const formRef = useRef<HTMLFormElement>(null);
 
   const scroll = () => { 
     const {offsetHeight, scrollHeight, scrollTop} = containerRef.current as HTMLDivElement;
@@ -25,19 +25,6 @@ export const Chat = () => {
     scroll();
   },[messages])
 
-  const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewMessage(event.target.value);
-  };
-
-  const handleMessageSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (newMessage.trim()) {
-      setMessages([...messages, { text: newMessage, sender: 'user' }]);
-      setNewMessage('');
-      // Add logic to send the message to the server or handle it in some other way
-    }
-  };
-
   return (
     <div className="container h-72 bg-background flex flex-col justify-between">
       <div             
@@ -47,20 +34,19 @@ export const Chat = () => {
           <div
             key={index}
             className={`my-2 w-full ${
-              message.sender === 'user'
+              message.role === 'user'
                 ? 'self-end bg-blue-500 text-white rounded-l-lg rounded-br-lg'
                 : 'bg-gray-300 rounded-r-lg rounded-bl-lg'
             }`}
           >
-            <div className="p-2">{message.text}</div>
+            <div className="p-2">{message.content}</div>
           </div>
         ))}
       </div>
-      <form onSubmit={handleMessageSubmit} className="flex p-4">
+      <form ref={formRef} onSubmit={handleSubmit} className="flex p-4">
         <Input
           type="text"
-          value={newMessage}
-          onChange={handleMessageChange}
+          onChange={handleInputChange}
           placeholder="Ask me anything about this video"
           className="flex-grow px-4 py-2 mr-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

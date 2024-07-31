@@ -152,7 +152,6 @@ export const SumamryForm = () => {
   // Rendering the component
   return (
     <>
-    {/* <Chat /> */}
       <form action={handleSubmit} className="flex gap-2 mb-10">
         <Input
           name="url"

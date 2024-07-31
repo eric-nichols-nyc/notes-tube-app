@@ -2,7 +2,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
-import { StreamableValue, createStreamableValue } from "ai/rsc";
 export async function GET(request: NextRequest) {
     return new NextResponse('Hello, world!');
 }
