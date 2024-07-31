@@ -13,6 +13,7 @@ import { Separator } from "@radix-ui/react-separator";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { toast } from "sonner";
 import AppTabs from "./app-tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Defining a type for the Transcript object
 export type Transcript = {
@@ -103,7 +104,11 @@ export const SumamryForm = () => {
     // Fetching the transcript from the YouTube API
     try {
       const transcript = (await createTranscript(url)) as any;
-      console.log(transcript);
+      console.log("transcript = ", transcript);
+      if (!transcript) {
+        toast("Transcript is not available for this video!"); // Showing a toast message if there's an error
+        return;
+      }
 
       if (transcript?.message) {
         toast(transcript.message); // Showing a toast message if there's an error
@@ -189,8 +194,17 @@ export const SumamryForm = () => {
         </Button>
       </form>
       {isLoading && ( // Rendering a loading message if the component is loading
-        <div className="text-center">
-          <p className="text-sm text-gray-500">Thinking...</p>
+        <div className="grid grid-cols-2 gap-4 items-center justify-center space-x-4w full">
+          <div className="grid-cols-1">
+            <div className="space-y-2">
+              <Skeleton className="h-[300px] w-full" />
+            </div>
+          </div>
+          <div className="grid-cols-1">
+            <div className="space-y-2">
+            <Skeleton className="h-[300px] w-full" />
+            </div>
+          </div>
         </div>
       )}
       <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-2">
@@ -200,7 +214,8 @@ export const SumamryForm = () => {
           </AspectRatio>
         </div>
         <div className="grid-cols-1">
-          {copy && <AppTabs transcript={transcript} copy={copy} />} {/* Rendering the summary */}
+          {copy && <AppTabs transcript={transcript} copy={copy} />}{" "}
+          {/* Rendering the summary */}
         </div>
       </div>
     </>
