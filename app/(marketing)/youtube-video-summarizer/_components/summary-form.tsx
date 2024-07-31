@@ -130,7 +130,7 @@ export const SumamryForm = () => {
             return;
           }
           setVideoId(videoId); // Updating the video ID state
-
+          setIsLoading(false)
           // Streaming the summary and updating the copy state
           for await (const delta of readStreamableValue(summary))
             setCopy(delta ?? "");
@@ -202,7 +202,7 @@ export const SumamryForm = () => {
           </div>
           <div className="grid-cols-1">
             <div className="space-y-2">
-            <Skeleton className="h-[300px] w-full" />
+             <Skeleton className="h-[300px] w-full" />
             </div>
           </div>
         </div>
