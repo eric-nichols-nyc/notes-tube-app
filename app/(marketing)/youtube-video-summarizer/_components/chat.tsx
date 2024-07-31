@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import {useChat} from 'ai/react';
 
 type Message = {
   text: string;
@@ -9,6 +10,20 @@ type Message = {
 export const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  //const {messages, input, handleInputChange, handleSubmit} = useChat();
+
+  const scroll = () => { 
+    const {offsetHeight, scrollHeight, scrollTop} = containerRef.current as HTMLDivElement;
+    if(scrollHeight >= scrollTop + offsetHeight) {
+      containerRef.current?.scrollTo(0, scrollHeight + 200);
+    }
+  }
+
+  useEffect(() => {
+    scroll();
+  },[messages])
 
   const handleMessageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewMessage(event.target.value);
@@ -25,7 +40,9 @@ export const Chat = () => {
 
   return (
     <div className="container h-72 bg-background flex flex-col justify-between">
-      <div className="flex-grow p-4 overflow-y-auto">
+      <div             
+        ref={containerRef} 
+        className="flex-grow p-4 overflow-y-auto">
         {messages.map((message, index) => (
           <div
             key={index}

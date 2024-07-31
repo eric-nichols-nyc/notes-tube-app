@@ -14,6 +14,7 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { toast } from "sonner";
 import AppTabs from "./app-tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import Chat from "./chat";
 
 // Defining a type for the Transcript object
 export type Transcript = {
@@ -85,19 +86,20 @@ export const SumamryForm = () => {
   const handleSubmit = async (data: FormData) => {
     const url = data.get("url") as string;
     if (!url) {
-      alert("url is required"); // Showing an alert if the URL is missing
+      toast("A URL is required!"); 
+      setIsLoading(false)
       return;
     }
     // Checking if the URL is a valid YouTube URL
     if (!validateYouTubeUrl(url)) {
-      alert("Please enter a valid YouTube URL");
+      toast("Please enter a valid YouTube URL!");
       return;
     }
     // Extracting the video ID from the URL
     const videoId = getYouTubeVideoID(url);
 
     if (!videoId) {
-      alert("Video ID could not be found");
+      toast("Video ID could not be found");
       return;
     }
 
@@ -150,6 +152,7 @@ export const SumamryForm = () => {
   // Rendering the component
   return (
     <>
+    <Chat />
       <form action={handleSubmit} className="flex gap-2 mb-10">
         <Input
           name="url"
@@ -215,7 +218,6 @@ export const SumamryForm = () => {
         </div>
         <div className="grid-cols-1">
           {copy && <AppTabs transcript={transcript} copy={copy} />}{" "}
-          {/* Rendering the summary */}
         </div>
       </div>
     </>

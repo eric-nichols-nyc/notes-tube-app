@@ -24,7 +24,7 @@ export default function AppTabs({ transcript, copy }: AppTabsProps) {
       <TabsList className="grid w-full grid-cols-3 h-10">
       <TabsTrigger value="summary">AI Summary</TabsTrigger>
         <TabsTrigger value="transcript">Transcript</TabsTrigger>
-        <TabsTrigger value="chat">Chat</TabsTrigger>
+        <TabsTrigger value="chat">AI Chat</TabsTrigger>
       </TabsList>
       <TabsContent value="transcript">
         <Card>
