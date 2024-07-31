@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
 // create a post request using next/server
 export async function POST(request: NextRequest) {
     const {content} = await request.json();
-    console.log('content = ', content)
     try{
         const result = await streamText({
             model: openai("gpt-4o"),
