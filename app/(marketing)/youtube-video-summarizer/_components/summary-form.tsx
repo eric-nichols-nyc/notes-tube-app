@@ -65,7 +65,7 @@ export const SumamryForm = () => {
   function reduceTextItems(array: any[]) {
     let result = "";
     array.forEach((obj) => {
-      let seconds = convertToMinutesAndSeconds(obj.offset) + " " + obj.text;
+      let seconds = convertToMinutesAndSeconds(obj.offset);
       let ts = {
         text: obj.text,
         duration: obj.offset,

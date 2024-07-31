@@ -11,6 +11,7 @@ import { Separator } from "@/components/ui/separator";
 import { ClockIcon } from "lucide-react";
 import { Chat } from "./chat";
 import {Transcript} from "./summary-form";
+import { Button } from "@/components/ui/button";
 
 interface AppTabsProps {
   transcript: Transcript[];
@@ -33,11 +34,11 @@ export default function AppTabs({ transcript, copy }: AppTabsProps) {
               <div className="p-4">
                 {transcript?.map((tag) => (
                   <>
-                    <div key={tag.text} className="text-sm">
-                      <span className="inline-flex items-center mr-2 text-blue-500">
-                      <ClockIcon size={16} className="inline mr-1" />
-                      {tag.offset}
-                      </span>
+                    <div key={tag.offset} className="tflex gap-2 ext-sm">
+                      <Button size="sm" className="bg-slate-300 inline-flex items-center mr-2 text-blue-500">
+                        <ClockIcon size={16} className="inline mr-1" />
+                        {tag.offset}
+                      </Button>
                      <span>
                       {tag.text}
                      </span>
