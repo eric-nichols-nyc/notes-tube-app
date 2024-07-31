@@ -5,16 +5,12 @@ import { createTranscript, streamAndSummarizeContent } from "@/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { readStreamableValue } from "ai/rsc";
-import Markdown from "react-markdown";
 import React from "react";
 import { YTPlayer } from "@/components/youtube-player";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@radix-ui/react-separator";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import { toast } from "sonner";
 import AppTabs from "./app-tabs";
 import { Skeleton } from "@/components/ui/skeleton";
-import Chat from "./chat";
 
 // Defining a type for the Transcript object
 export type Transcript = {

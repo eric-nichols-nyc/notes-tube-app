@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import {useChat} from 'ai/react';
+import { on } from 'events';
 
 type Message = {
   text: string;
@@ -13,12 +14,19 @@ export const Chat = () => {
   });
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scroll = () => { 
     const {offsetHeight, scrollHeight, scrollTop} = containerRef.current as HTMLDivElement;
     if(scrollHeight >= scrollTop + offsetHeight) {
       containerRef.current?.scrollTo(0, scrollHeight + 200);
     }
+  }
+
+  const onSubmit = (e:FormEvent) => {
+    e.preventDefault()
+    handleSubmit();
+    inputRef.current!.value='';
   }
 
   useEffect(() => {
@@ -43,9 +51,10 @@ export const Chat = () => {
           </div>
         ))}
       </div>
-      <form ref={formRef} onSubmit={handleSubmit} className="flex p-4">
+      <form onSubmit={onSubmit} className="flex p-4">
         <Input
           type="text"
+          ref={inputRef}
           onChange={handleInputChange}
           placeholder="Ask me anything about this video"
           className="flex-grow px-4 py-2 mr-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
