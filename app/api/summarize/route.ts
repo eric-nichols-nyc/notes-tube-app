@@ -2,9 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
-export async function GET(request: NextRequest) {
-    return new NextResponse('Hello, world!');
-}
+
 // create a post request using next/server
 export async function POST(request: NextRequest) {
     const {content} = await request.json();

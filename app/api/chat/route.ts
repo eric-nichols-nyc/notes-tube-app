@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
         });
         return result.toAIStreamResponse();
     } catch (e) {
-        console.log('e = ', e)
         return new NextResponse('Error fetching transcript', { status: 500 });
     }
 }
