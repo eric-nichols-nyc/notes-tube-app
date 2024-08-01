@@ -4,7 +4,7 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import Markdown from "react-markdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -15,10 +15,11 @@ import { Button } from "@/components/ui/button";
 
 interface AppTabsProps {
   transcript: Transcript[];
-  copy: string;
+  markdown: string;
 }
 
-export default function AppTabs({ transcript, copy }: AppTabsProps) {
+export default function AppTabs({ transcript, markdown }: AppTabsProps) {
+  const content = transcript.map((tag) => tag.text).join(" ");
   return (
     <Tabs defaultValue="summary" className="w-full h-full">
       <TabsList className="grid w-full grid-cols-3 h-10">
@@ -56,13 +57,13 @@ export default function AppTabs({ transcript, copy }: AppTabsProps) {
         <Card>
           <CardContent className="space-y-2">
           <ScrollArea className="h-72 w-full rounded-md border p-4">
-                <Markdown>{copy}</Markdown>
+                <Markdown>{markdown}</Markdown>
               </ScrollArea>
           </CardContent>
         </Card>
       </TabsContent>
       <TabsContent value="chat">
-       <Chat />
+       <Chat content={content} />
       </TabsContent>
     </Tabs>
   );

@@ -102,7 +102,6 @@ export const SumamryForm = () => {
     // Fetching the transcript from the YouTube API
     try {
       const transcript = (await createTranscript(url)) as any;
-      console.log("transcript = ", transcript);
       if (!transcript) {
         toast("Transcript is not available for this video!"); // Showing a toast message if there's an error
         return;
@@ -212,7 +211,7 @@ export const SumamryForm = () => {
           </AspectRatio>
         </div>
         <div className="grid-cols-1">
-          {copy && <AppTabs transcript={transcript} copy={copy} />}{" "}
+          {copy && <AppTabs transcript={transcript} markdown={copy} />}{" "}
         </div>
       </div>
     </>

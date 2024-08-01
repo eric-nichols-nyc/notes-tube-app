@@ -2,15 +2,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import {useChat} from 'ai/react';
-import { on } from 'events';
 
 type Message = {
   text: string;
   sender: 'user' | 'other';
 }
-export const Chat = () => {
+
+type ChatProps = {
+  content: string;
+}
+export const Chat = ({content}:ChatProps) => {
   const {messages, input, handleInputChange, handleSubmit} = useChat({
     api: '/api/chat',
+    body: {content}
   });
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
