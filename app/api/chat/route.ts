@@ -6,7 +6,8 @@ import { streamText } from 'ai';
 import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
     const { messages, content } = await request.json();
-    const askQuestion = `${messages}, using this knowledge from this video ${content} in 150 words or less.`;
+    const questions = messages
+    const askQuestion = `${questions}, using this knowledge from this video ${content} in one sentance.`;
     try {
         const result = await streamText({
             model: openai("gpt-4o"),

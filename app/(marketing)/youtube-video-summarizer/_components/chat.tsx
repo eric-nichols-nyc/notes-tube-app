@@ -2,19 +2,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 import {useChat} from 'ai/react';
-
-type Message = {
-  text: string;
-  sender: 'user' | 'other';
-}
+import { Loader2 } from 'lucide-react';
 
 type ChatProps = {
   content: string;
 }
 export const Chat = ({content}:ChatProps) => {
-  const {messages, input, handleInputChange, handleSubmit} = useChat({
+  const [thinking, setThingking] = useState(false);
+  const {messages, input, handleInputChange, handleSubmit, isLoading, } = useChat({
     api: '/api/chat',
-    body: {content}
+    body: {content},
   });
   const containerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -51,6 +48,11 @@ export const Chat = ({content}:ChatProps) => {
                 : 'bg-gray-300 rounded-r-lg rounded-bl-lg'
             }`}
           >
+            {
+              isLoading && message.role !== 'user' && message.content.length === 0 ? (
+                <div className="p-2"><Loader2 className="mr-2 h-4 w-4 animate-spin" /></div>
+              ) : null
+            }
             <div className="p-2">{message.content}</div>
           </div>
         ))}
